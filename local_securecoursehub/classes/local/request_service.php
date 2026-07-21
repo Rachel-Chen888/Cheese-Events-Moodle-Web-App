@@ -1,73 +1,130 @@
 <?php
+
 namespace local_securecoursehub\local;
 
 defined('MOODLE_INTERNAL') || die();
 
 class request_service {
 
-    /**
-     * Get requests for a specific course. 
-     * If a user ID is provided, filter to only show their requests.
-     */
-    public static function get_requests($courseid, $userid = null) {
+#Create---------------------------------------------------------------------------------------------------------------
+    public function create_request($courseid, $userid, $title, $description) {
         global $DB;
-        
-        $conditions = ['courseid' => $courseid];
-        if ($userid !== null) {
-            $conditions['userid'] = $userid;
+
+        #Creates new object
+        $request = new \stdClass();
+
+        #Fills the new object
+        $request->courseid = $courseid;
+        $request->userid = $userid;
+        $request->title = $title;
+        $request->description = $description;
+        $request->status = "open";
+        $request->response = "";
+        $request->timecreated = time();
+        $request->timemodified = time();
+
+        #Return statement
+        return $DB->insert_record('local_securecoursehub', $request);
+    }
+
+    #Student requests---------------------------------------------------------------------------------------------------------------
+    public function get_student_requests($userid) {
+        global $DB;
+
+        return $DB->get_records(
+            'local_securecoursehub',
+            ['userid' => $userid],
+            'timecreated DESC'
+        );
+    }
+
+    #Teacher requests-------------------------------------------------------------------------------------------
+    public function get_course_requests($courseid) {
+        global $DB;
+
+        return $DB->get_records(
+            'local_securecoursehub',
+            ['courseid' => $courseid],
+            'timecreated DESC'
+        );
+    }
+
+    #Admin Requests (Assuming they can do everything the students AND teachers can do)-----------------------------------------------
+    public function get_all_requests() {
+        global $DB;
+
+        return $DB->get_records(
+            'local_securecoursehub',
+            null,
+            'timecreated DESC'
+        );
+    }
+
+    public function get_request($id) {
+        global $DB;
+
+        return $DB->get_record(
+            'local_securecoursehub',
+            ['id' => $id]
+        );
+    }
+
+    #Delete -------------------------------------------------------------------------------------------
+    public function delete_request($id) {
+        global $DB;
+
+        return $DB->delete_records(
+            'local_securecoursehub',
+            ['id' => $id]
+        );
+    }
+
+    #Update Student requests-----------------------------------------------------------------------------
+        #TODO: ADD OWNERSHIP
+    public function update_student_request($id, $title, $description) {
+        global $DB;
+
+        $request = $DB->get_record(
+            'local_securecoursehub',
+            ['id' => $id]
+        );
+
+        if (!$request) {
+            return false;
         }
-        
-        // Use Moodle's Database API to safely fetch records
-        return $DB->get_records('local_securecoursehub', $conditions, 'timecreated DESC');
+
+        $request->title = $title;
+        $request->description = $description;
+        $request->timemodified = time();
+
+        return $DB->update_record(
+            'local_securecoursehub',
+            $request
+        );
     }
 
-    /**
-     * Create a new help request.
-     */
-    public static function create_request($courseid, $userid, $title, $description) {
+    #Teacher Update-----------------------------------------------------------------------------------------------
+    public function update_teacher_request($id, $status, $response) {
         global $DB;
-        
-        $record = new \stdClass();
-        $record->courseid = $courseid;
-        $record->userid = $userid;
-        $record->title = $title;
-        $record->description = $description;
-        $record->status = 'open';
-        $record->timecreated = time();
-        $record->timemodified = time();
-        
-        return $DB->insert_record('local_securecoursehub', $record);
-    }
 
-    /**
-     * Update the status of an existing request (Teacher operation).
-     */
-    public static function update_status($id, $newstatus, $response = '') {
-        global $DB;
-        
-        // Verify the record exists first
-        $record = $DB->get_record('local_securecoursehub', ['id' => $id], '*', MUST_EXIST);
-        
-        $record->status = $newstatus;
-        $record->response = $response;
-        $record->timemodified = time();
-        
-        return $DB->update_record('local_securecoursehub', $record);
-    }
+        $request = $DB->get_record(
+            'local_securecoursehub',
+            ['id' => $id]
+        );
 
-    /**
-     * Delete an open request (Student operation).
-     */
-    public static function delete_request($id, $userid) {
-        global $DB;
-        
-        // Ensure the record exists, belongs to the user, and is still open
-        $record = $DB->get_record('local_securecoursehub', ['id' => $id, 'userid' => $userid]);
-        
-        if ($record && $record->status === 'open') {
-            return $DB->delete_records('local_securecoursehub', ['id' => $id]);
+        if (!$request) {
+            return false;
         }
-        
-        return false;
+
+        $request->status = $status;
+        $request->response = $response;
+        $request->timemodified = time();
+
+        return $DB->update_record(
+            'local_securecoursehub',
+            $request
+        );
     }
 }
+
+#TODO: ownership checks (students can only edit/delete their own requests), capability checks, validation, and allowed status transitions
