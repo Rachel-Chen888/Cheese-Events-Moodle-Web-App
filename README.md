@@ -13,3 +13,5 @@ run  .\setup.ps1 in powershell to start the moodle UI
 
 To login as admin, username: user, passwd: bitnami
 I use Test1234! as passwd for the rest of the account.
+
+The plugin is located at http://127.0.0.1:8080/local/securecoursehub/index.php?courseid=2
