@@ -32,7 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && optional_param('action', '', PARAM_
     $title = required_param('title', PARAM_TEXT);
     $description = required_param('description', PARAM_TEXT);
 
-    $service->create_request($courseid, $USER->id, $title, $description);
+    $result = $service->create_request($courseid, $USER->id, $title, $description);
+
+    //DOUBLE CHECK THIS
+    if(!$result){
+        throw new moodle_exception(
+            'invalidrequest',
+            'local_coursehub',
+            //TODO: POSSIBLY PRESENT ERROR MESSAGE
+        )
+    }
 
     redirect(
         new moodle_url('/local/securecoursehub/index.php', ['courseid' => $courseid]),
@@ -40,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && optional_param('action', '', PARAM_
         null,
         \core\output\notification::NOTIFY_SUCCESS
     );
+    //TODO: Program error messages for invalid submissions.
 }
 
 // 3. Capability Flags
