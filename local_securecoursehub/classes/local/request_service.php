@@ -87,7 +87,7 @@ class request_service {
         global $DB;
         #find request using ID
         $request = $this->get_request($id);
-        if(!request){
+        if(!$request){
             return false;
         }
 
