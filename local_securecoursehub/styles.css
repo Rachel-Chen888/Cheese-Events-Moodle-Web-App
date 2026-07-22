@@ -1,0 +1,30 @@
+/* local_securecoursehub/styles.css */
+.path-local-securecoursehub .badge-open,
+.path-local-securecoursehub .badge-secondary {
+    background-color: #6c757d;
+    color: #fff;
+    padding: 0.35em 0.65em;
+    border-radius: 0.25rem;
+}
+
+.path-local-securecoursehub .badge-inprogress,
+.path-local-securecoursehub .badge-warning {
+    background-color: #ffc107;
+    color: #212529;
+    padding: 0.35em 0.65em;
+    border-radius: 0.25rem;
+}
+
+.path-local-securecoursehub .badge-resolved,
+.path-local-securecoursehub .badge-success {
+    background-color: #28a745;
+    color: #fff;
+    padding: 0.35em 0.65em;
+    border-radius: 0.25rem;
+}
+
+.path-local-securecoursehub textarea.sch-response-input {
+    width: 100%;
+    min-height: 60px;
+    font-size: 0.9rem;
+}
