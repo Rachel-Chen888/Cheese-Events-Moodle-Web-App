@@ -114,7 +114,7 @@ class request_service {
         
         #Exists?
         $request = $this->get_request($id);
-        if(!request){
+        if(!$request){
             return false;
         }
 
