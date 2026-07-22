@@ -8,6 +8,19 @@ class request_service {
 
 #Create---------------------------------------------------------------------------------------------------------------
     public function create_request($courseid, $userid, $title, $description) {
+        #Validation steps:
+        $title = trim($title);
+        $description = trim($description);
+
+        if($title === '' || strlen($title) > 255){
+            return false;
+        }
+
+        if($description === ''){
+            return false;
+        }
+
+
         global $DB;
 
         #Creates new object
@@ -70,26 +83,60 @@ class request_service {
     }
 
     #Delete -------------------------------------------------------------------------------------------
-    public function delete_request($id) {
+    public function delete_request($id,$userid) {
         global $DB;
+        #find request using ID
+        $request = $this->get_request($id);
+        if(!request){
+            return false;
+        }
+
+        #Ownership
+        if($request->userid != $userid){
+            return false;
+        }
+
+        #Status
+        if($request->status !== 'open'){
+            return false;
+        }
 
         return $DB->delete_records(
             'local_securecoursehub',
-            ['id' => $id]
+            ['id' => $id],
         );
     }
 
     #Update Student requests-----------------------------------------------------------------------------
         #TODO: ADD OWNERSHIP
-    public function update_student_request($id, $title, $description) {
+    public function update_student_request($id,$userid, $title, $description) {
         global $DB;
+        
+        #Exists?
+        $request = $this->get_request($id);
+        if(!request){
+            return false;
+        }
 
-        $request = $DB->get_record(
-            'local_securecoursehub',
-            ['id' => $id]
-        );
+        #Ownership
+        if($request->userid != $userid){
+            return false;
+        }
 
-        if (!$request) {
+        #Status
+        if($request->status !== 'open'){
+            return false;
+        }
+
+        #Validate
+        $title = trim($title);
+        $description = trim($description);
+
+        if($title === '' || strlen($title) > 255){
+            return false;
+        }
+        
+        if($description === ''){
             return false;
         }
 
@@ -107,11 +154,25 @@ class request_service {
     public function update_teacher_request($id, $status, $response) {
         global $DB;
 
-        $request = $DB->get_record(
-            'local_securecoursehub',
-            ['id' => $id]
-        );
+        #Need to check statuses
+        $allowed = [
+            'open',
+            'inprogress',
+            'resolved'
+        ];
 
+        if(!in_array($status, $allowed)){
+            return false;
+        }
+
+        #Response validation
+        $response = trim($response);
+        if(strlen($response) > 500) {
+            return false;
+        }
+        
+        
+        $request = $this->get_request($id);
         if (!$request) {
             return false;
         }
@@ -120,6 +181,8 @@ class request_service {
         $request->response = $response;
         $request->timemodified = time();
 
+
+       
         return $DB->update_record(
             'local_securecoursehub',
             $request
