@@ -12,7 +12,7 @@ class request_service {
         $title = trim($title);
         $description = trim($description);
 
-        if($title === '' || strlen($title) > 255){
+        if($title === '' || core_text::strlen($title) > 255){
             return false;
         }
 
@@ -132,7 +132,7 @@ class request_service {
         $title = trim($title);
         $description = trim($description);
 
-        if($title === '' || strlen($title) > 255){
+        if($title === '' || core_text::strlen($title) > 255){
             return false;
         }
         
@@ -167,7 +167,7 @@ class request_service {
 
         #Response validation
         $response = trim($response);
-        if(strlen($response) > 500) {
+        if(core_text::strlen($response) > 500) {
             return false;
         }
         
