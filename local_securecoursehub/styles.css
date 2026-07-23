@@ -1,4 +1,17 @@
 /* local_securecoursehub/styles.css */
+
+/*Badges*/
+
+.badge-open{
+    background: #6c757d;
+}
+
+.badge{
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 6px 14px;
+}
+
 .path-local-securecoursehub .badge-open,
 .path-local-securecoursehub .badge-secondary {
     background-color: #6c757d;
@@ -27,4 +40,137 @@
     width: 100%;
     min-height: 60px;
     font-size: 0.9rem;
+}
+
+/*MIGHT REMOVE*/
+.path-local-securecoursehub .sch-response-input{
+
+    resize:vertical;
+    min-height:80px;
+}
+
+/*Page*/
+.path-local-securecoursehub {
+    background:#fdf8e8;
+}
+
+.path-local-securecoursehub h3 {
+    color:#41213a;;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.path-local-securecoursehub .generalbox {
+    background:#fffdf6;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    margin-bottom: 30px;
+}
+
+/*Inputs*/
+.path-local-securecoursehub input[type=text],
+.path-local-securecoursehub textarea,
+.path-local-securecoursehub select {
+
+    border-radius:8px;
+    border:1px solid #ccc;
+    transition:.2s;
+}
+
+.path-local-securecoursehub input:focus,
+.path-local-securecoursehub textarea:focus,
+.path-local-securecoursehub select:focus{
+
+    border-color:#4a2e2e;
+    box-shadow:0 0 6px rgba(74,46,46,.25);
+    outline:none;
+}
+
+/*Buttons*/
+.path-local-securecoursehub .btn{
+
+    border-radius:8px;
+    transition:.2s;
+    background:#4a2e2e;
+    border-color:#4a2e2e;
+    color:#faecc0;
+}
+
+.path-local-securecoursehub .btn:hover{
+    background:#41213a;
+    border-color:#41213a;
+
+    transform:translateY(-1px);
+}
+
+/*table*/
+.path-local-securecoursehub table{
+
+    border-radius:10px;
+    overflow:hidden;
+    background:white;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+    border-collapse:separate;
+    border-spacing:0;
+}
+
+.path-local-securecoursehub tbody tr{
+
+    transition:.15s;
+}
+
+.path-local-securecoursehub tbody tr:hover{
+
+    background:#faecb0;
+}
+
+.path-local-securecoursehub td,
+.path-local-securecoursehub th{
+
+    vertical-align:middle;
+}
+
+
+/*Header*/
+.path-local-securecoursehub thead{
+
+    background:#41213a;
+    color:#faecc0;
+}
+
+.path-local-securecoursehub th{
+
+    padding:14px;
+}
+
+/*Feedback messages*/
+#feedback-1,
+[id^="feedback-"]{
+
+    margin-top:8px;
+    font-size:.85rem;
+}
+
+/*MOBILE FORM*/
+@media (max-width:768px){
+
+    .path-local-securecoursehub table{
+
+        display:block;
+        overflow-x:auto;
+    }
+
+    .path-local-securecoursehub textarea{
+
+        width:100%;
+    }
+
+    .path-local-securecoursehub .btn{
+
+        width:100%;
+        margin-top:8px;
+    }
+
 }
