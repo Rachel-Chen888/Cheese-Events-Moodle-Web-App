@@ -94,7 +94,7 @@ try {
             exit;
         }
 
-        $success = $service->delete_request($id);
+        $success = $service->delete_request($id, $USER->id);
         echo json_encode(['success' => $success, 'id' => $id]);
 
     } else {

@@ -98,6 +98,26 @@ define(['core/config'], function(cfg) {
                         if (row) {
                             row.remove();
                         }
+
+                        else{ //if table is empty/there are no rows
+                            const tbody = document.querySelector('tbody');
+
+                            if(tbody && tbody.children.length === 0){
+
+                                const table = tbody.closest('table');
+                                if(table){
+                                    table.remove();
+                                }
+
+                                const message = document.createElement('p');
+                                message.className = 'alert alert-info';
+                                message.textContent = 'No help requests found.';
+
+                                document.body.appendChild(message);
+                            }
+
+                        }
+
                     } catch (err) {
                         alert('Delete failed: ' + err.message);
                     }
